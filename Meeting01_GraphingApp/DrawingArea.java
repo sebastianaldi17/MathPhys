@@ -18,6 +18,7 @@ class DrawingArea extends JPanel {
     private final static int MAX_POINTS = 1000;    // in case the function is a loop, or the thread runs for far too long
     private ArrayList<Point2D.Double> points1 = new ArrayList<>();
     private ArrayList<Point2D.Double> points2 = new ArrayList<>();
+    private ArrayList<Point2D.Double> points3 = new ArrayList<>();
     private Image drawingArea;
     private Thread animator;    // thread to draw the graph
 
@@ -41,7 +42,22 @@ class DrawingArea extends JPanel {
     private double function2(double x) {
         return 1/x; // Disjoints at 0. Normally.
     } // This creates a line that connects from 0, -inf to 0, inf. Probably due to the nature of how java draw lines (connect from a to b, or from [-0, -inf] to [0, inf])
-
+    
+    // Accepts a parameter and returns the x and y
+    public double functionPx(double t) {
+        return 2*t*t - 5*t + 3; // x = 2(t^2) - 5t + 3
+    }
+    public double functionPy(double t) {
+        return 2*t + 5; // y = 2t + 5
+    }
+    // Used to convert back from (r, theta) to x and y
+    public double convertX(double r, double theta) {
+        return r * Math.cos(theta);
+    }
+    public double convertY(double r, double theta) {
+        return r * Math.sin(theta);
+    }
+    
     // start drawing graph
     public void beginDrawing(double lengthX, double lengthY, double startX, double increment) {
         // retrieve data
@@ -75,6 +91,7 @@ class DrawingArea extends JPanel {
         draw = false;
         points1.clear();
         points2.clear();
+        points3.clear();
         try {
             animator.join();
         } catch (InterruptedException ex) {
@@ -92,6 +109,7 @@ class DrawingArea extends JPanel {
             currentX = currentX + increment;
             points1.add(new Point2D.Double(currentX, function1(currentX)));
             points2.add(new Point2D.Double(currentX, function2(currentX)));
+            points3.add(new Point2D.Double(functionPx(currentX), functionPy(currentX)));
         }
         else {      // cleanup for the next thread
             draw = false;
@@ -127,6 +145,9 @@ class DrawingArea extends JPanel {
                 g.setColor(Color.BLUE); // set second line color to blue
                 g.drawLine((int) (originX + points2.get(i).x * scaleX), (int) (originY - points2.get(i).y * scaleY),
                         (int) (originX + points2.get(i + 1).x * scaleX), (int) (originY - points2.get(i + 1).y * scaleY));
+                g.setColor(Color.RED); //set third line color to red
+                g.drawLine((int) (originX + points3.get(i).x * scaleX), (int) (originY - points3.get(i).y * scaleY),
+                        (int) (originX + points3.get(i + 1).x * scaleX), (int) (originY - points3.get(i + 1).y * scaleY));
             }
         }
     }
