@@ -35,12 +35,12 @@ class DrawingArea extends JPanel {
 
     // functions to draw on the screen
     private double function1(double x) {
-        return x*x - 4*x + 4; // Returns points for the curve x^2 - 4x + 4
-    } // Oh wow, the curve changed [yay]
+        return 4*x*x-16;
+    }
 
     private double function2(double x) {
-        return 2*x+1;
-    }
+        return 1/x; // Disjoints at 0. Normally.
+    } // This creates a line that connects from 0, -inf to 0, inf. Probably due to the nature of how java draw lines (connect from a to b, or from [-0, -inf] to [0, inf])
 
     // start drawing graph
     public void beginDrawing(double lengthX, double lengthY, double startX, double increment) {
