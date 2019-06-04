@@ -35,8 +35,8 @@ class DrawingArea extends JPanel {
 
     // functions to draw on the screen
     private double function1(double x) {
-        return 4*x*x-16;
-    }
+        return x*x - 4*x + 4; // Returns points for the curve x^2 - 4x + 4
+    } // Oh wow, the curve changed [yay]
 
     private double function2(double x) {
         return 2*x+1;

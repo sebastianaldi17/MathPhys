@@ -101,7 +101,7 @@ class GraphingApp {
         double begin = Double.parseDouble(fieldBegin.getText()); 
         // This sets the step, or by how much is the distance of two points
         // Lower causes the graph to be smoother (especially for curves) but takes longer to process
-        double increment = Double.parseDouble(fieldIncrement.getText());
+        double increment = Double.parseDouble(fieldIncrement.getText()); 
         drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
         drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
     }
