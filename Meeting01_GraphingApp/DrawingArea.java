@@ -19,6 +19,7 @@ class DrawingArea extends JPanel {
     private ArrayList<Point2D.Double> points1 = new ArrayList<>();
     private ArrayList<Point2D.Double> points2 = new ArrayList<>();
     private ArrayList<Point2D.Double> points3 = new ArrayList<>();
+    private ArrayList<Point2D.Double> points4 = new ArrayList<>();
     private Image drawingArea;
     private Thread animator;    // thread to draw the graph
 
@@ -43,12 +44,17 @@ class DrawingArea extends JPanel {
         return 1/x; // Disjoints at 0. Normally.
     } // This creates a line that connects from 0, -inf to 0, inf. Probably due to the nature of how java draw lines (connect from a to b, or from [-0, -inf] to [0, inf])
     
+    // function to graph r = 1 + cos(theta), input theta, output r
+    private double polarFunction(double theta) {
+        return 1 + Math.cos(theta);
+    }
+
     // Accepts a parameter and returns the x and y
     public double functionPx(double t) {
         return 2*t*t - 5*t + 3; // x = 2(t^2) - 5t + 3
     }
     public double functionPy(double t) {
-        return 2*t + 5; // y = 2t + 5
+        return 2*t + 5; // y = t^2 - 5
     }
     // Used to convert back from (r, theta) to x and y
     public double convertX(double r, double theta) {
@@ -92,6 +98,7 @@ class DrawingArea extends JPanel {
         points1.clear();
         points2.clear();
         points3.clear();
+        points4.clear();
         try {
             animator.join();
         } catch (InterruptedException ex) {
@@ -107,9 +114,17 @@ class DrawingArea extends JPanel {
         {
             System.out.println("checking");
             currentX = currentX + increment;
+            // Trigonometry: y = 10 sin(x)
             points1.add(new Point2D.Double(currentX, function1(currentX)));
+            // Disjoint: y = 1/x
             points2.add(new Point2D.Double(currentX, function2(currentX)));
+            // Parametric: x = 2t^2 - 5t + 3, y = 2t + 5
             points3.add(new Point2D.Double(functionPx(currentX), functionPy(currentX)));
+            // polar: r = 10(1 + cos(theta))
+            double r1 = polarFunction(currentX);
+            double cartesianX1 = convertX(r1, currentX) * 10; // original function is r = 1+cos theta, but enlarged by 10
+            double cartesianY1 = convertY(r1, currentX) * 10;
+            points4.add(new Point2D.Double(cartesianX1, cartesianY1));
         }
         else {      // cleanup for the next thread
             draw = false;
@@ -145,9 +160,12 @@ class DrawingArea extends JPanel {
                 g.setColor(Color.BLUE); // set second line color to blue
                 g.drawLine((int) (originX + points2.get(i).x * scaleX), (int) (originY - points2.get(i).y * scaleY),
                         (int) (originX + points2.get(i + 1).x * scaleX), (int) (originY - points2.get(i + 1).y * scaleY));
-                g.setColor(Color.RED); //set third line color to red
+                g.setColor(Color.GREEN); //set third line color to green
                 g.drawLine((int) (originX + points3.get(i).x * scaleX), (int) (originY - points3.get(i).y * scaleY),
                         (int) (originX + points3.get(i + 1).x * scaleX), (int) (originY - points3.get(i + 1).y * scaleY));
+                g.setColor(Color.RED); //set fourth line color to red
+                g.drawLine((int) (originX + points4.get(i).x * scaleX), (int) (originY - points4.get(i).y * scaleY),
+                         (int) (originX + points4.get(i + 1).x * scaleX), (int) (originY - points4.get(i + 1).y * scaleY));
             }
         }
     }
