@@ -1,5 +1,3 @@
-package Meeting01_GraphingApp;
-
 /*
     Matfis pertemuan 01
     Simple graphing app
@@ -96,9 +94,13 @@ class GraphingApp {
 
     // get values from text fields
     private void sendValuesToDrawer() {
-        double lengthX = Double.parseDouble(fieldLengthX.getText());
-        double lengthY = Double.parseDouble(fieldLengthY.getText());
-        double begin = Double.parseDouble(fieldBegin.getText());
+        double lengthX = Double.parseDouble(fieldLengthX.getText()); // This sets the graph's x range from -x to x
+        double lengthY = Double.parseDouble(fieldLengthY.getText()); // This sets the graph's y range from -y to y
+        // the value from begin sets the graph's starting point from the specified x
+        // So that if the specified range is from -5 to 5 but the starting point is from 0, then the line is drawn from 0, not -5. (Does not apply for parametric and polar)
+        double begin = Double.parseDouble(fieldBegin.getText()); 
+        // This sets the step, or by how much is the distance of two points
+        // Lower causes the graph to be smoother (especially for curves) but takes longer to process
         double increment = Double.parseDouble(fieldIncrement.getText());
         drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
         drawingArea.beginDrawing(lengthX, lengthY, begin, increment);
