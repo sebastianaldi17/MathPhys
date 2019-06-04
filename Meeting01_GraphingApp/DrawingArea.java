@@ -35,7 +35,7 @@ class DrawingArea extends JPanel {
 
     // functions to draw on the screen
     private double function1(double x) {
-        return 4*x*x-16;
+        return 10*Math.sin(x); // Draws y = 10 sin(x)
     }
 
     private double function2(double x) {
@@ -121,8 +121,10 @@ class DrawingArea extends JPanel {
 
             // draw the lines
             for (int i = 0; i < points1.size() - 1; i++) {
+                g.setColor(Color.BLACK); // set first line color to black
                 g.drawLine((int) (originX + points1.get(i).x * scaleX), (int) (originY - points1.get(i).y * scaleY),
                         (int) (originX + points1.get(i + 1).x * scaleX), (int) (originY - points1.get(i + 1).y * scaleY));
+                g.setColor(Color.BLUE); // set second line color to blue
                 g.drawLine((int) (originX + points2.get(i).x * scaleX), (int) (originY - points2.get(i).y * scaleY),
                         (int) (originX + points2.get(i + 1).x * scaleX), (int) (originY - points2.get(i + 1).y * scaleY));
             }

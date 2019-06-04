@@ -65,25 +65,25 @@ class GraphingApp {
         // the x-axis would be shown from -lengthX to lengthX
         JLabel labelLengthX = new JLabel("Length of X axis");
         controlPanel.add(labelLengthX);
-        fieldLengthX = new JTextField(2);
+        fieldLengthX = new JTextField("30");
         controlPanel.add(fieldLengthX);
 
         // the y-axis would be shown from -lengthY to lengthY
         JLabel labelLengthY = new JLabel("Length of Y axis");
         controlPanel.add(labelLengthY);
-        fieldLengthY = new JTextField(2);
+        fieldLengthY = new JTextField("30");
         controlPanel.add(fieldLengthY);
 
         // function calculation will start from startX
         JLabel labelBegin = new JLabel("Start point from X");
         controlPanel.add(labelBegin);
-        fieldBegin = new JTextField(2);
+        fieldBegin = new JTextField("-30");
         controlPanel.add(fieldBegin);
 
         // the lesser the number, the more detailed it will become
         JLabel labelIncrement = new JLabel("Incremental factor");
         controlPanel.add(labelIncrement);
-        fieldIncrement = new JTextField(2);
+        fieldIncrement = new JTextField("0.1");
         controlPanel.add(fieldIncrement);
 
         // clicking the button will start the animation
