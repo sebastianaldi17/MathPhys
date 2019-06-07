@@ -54,8 +54,7 @@ class Shooter {
     private static final String INSTRUCTION = "Welcome to Cannon Simulation!\n" +
             "\nMove cannon's position = W A S D\n" +
             "Move shooting direction = Left | Right \n" +
-            "Launch bullet = Space\n" +
-            "\nThere can only one bullet at a time";
+            "Launch bullet = Space\n";
 
     private int cpSize = 230;      // set control panel's width
 
@@ -123,9 +122,9 @@ class Shooter {
                 super.keyPressed(e);
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()));
-                        drawingArea.setBullet(bullet);
+                        bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()), drawingArea.getTime());
                         bullet.shoot();
+                        drawingArea.addBullet(bullet);
                         break;
                     case KeyEvent.VK_LEFT:
                         cannon.rotateLeft();

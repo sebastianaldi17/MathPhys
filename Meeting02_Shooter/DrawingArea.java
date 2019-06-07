@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 class DrawingArea extends JPanel {
     public final static int GRAPH_SCALE = 30;
@@ -18,6 +19,7 @@ class DrawingArea extends JPanel {
     private Thread animator;    // thread to draw the
     private Cannon cannon;
     private Bullet bullet;
+    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
     // setup the drawing area
     public DrawingArea(int width, int height, int cpSize) {
@@ -45,9 +47,8 @@ class DrawingArea extends JPanel {
         this.cannon = cannon;
     }
 
-    public void setBullet(Bullet bullet) {
-        this.bullet = bullet;
-        this.bullet.setTime(time);
+    public void addBullet(Bullet bullet) {
+        this.bullets.add(bullet);
     }
 
     public int getOriginX() {
@@ -58,6 +59,9 @@ class DrawingArea extends JPanel {
         return originY;
     }
 
+    public double getTime() {
+        return time;
+    }
     private void eventLoop() {
         drawingArea = createImage(width, height);
         while (true) {
@@ -75,10 +79,12 @@ class DrawingArea extends JPanel {
 
     private void update() {
         time += TIME_INCREMENT;
-        if (bullet != null && bullet.isShot()) {
-            bullet.move(time);
-            if (bullet.getPositionY() > getHeight()) {
-                bullet.stopShoot();
+        for(int i = 0; i < bullets.size(); i++) {
+            if (bullets.get(i) != null && bullets.get(i).isShot()) {
+                bullets.get(i).move(time);
+                if (bullets.get(i).getPositionY() > getHeight()) {
+                    bullets.get(i).stopShoot();
+                }
             }
         }
     }
@@ -109,8 +115,10 @@ class DrawingArea extends JPanel {
 
             // draw cannon and bullet
             cannon.draw(g);
-            if (bullet != null && bullet.isShot()) {
-                bullet.draw(g);
+            for(int i = 0; i < bullets.size(); i++) {
+                if (bullets.get(i) != null && bullets.get(i).isShot()) {
+                    bullets.get(i).draw(g);
+                }
             }
         }
     }
