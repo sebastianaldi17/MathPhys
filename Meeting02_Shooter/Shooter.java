@@ -50,11 +50,13 @@ class Shooter {
     // game area
     private Bullet bullet = null;
     private Cannon cannon;
-
-    private static final String INSTRUCTION = "Welcome to Cannon Simulation!\n" +
+    private static int limit = 5; // change capacity to limit the number of bullets
+    private static int shot = 0;
+    private static String INSTRUCTION = "Welcome to Cannon Simulation!\n" +
             "\nMove cannon's position = W A S D\n" +
             "Move shooting direction = Left | Right \n" +
-            "Launch bullet = Space\n";
+            "Launch bullet = Space\n" +
+            "Bullets left: " + Integer.toString(limit);
 
     private int cpSize = 230;      // set control panel's width
 
@@ -122,9 +124,18 @@ class Shooter {
                 super.keyPressed(e);
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()), drawingArea.getTime());
-                        bullet.shoot();
-                        drawingArea.addBullet(bullet);
+                        if(shot < limit) {
+                            bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()), drawingArea.getTime());
+                            bullet.shoot();
+                            drawingArea.addBullet(bullet);
+                            shot++;
+                            INSTRUCTION = "Welcome to Cannon Simulation!\n" +
+                                            "\nMove cannon's position = W A S D\n" +
+                                            "Move shooting direction = Left | Right \n" +
+                                            "Launch bullet = Space\n" +
+                                            "Bullets left: " + Integer.toString(limit - shot);
+                            instruction.setText(INSTRUCTION);
+                        }
                         break;
                     case KeyEvent.VK_LEFT:
                         cannon.rotateLeft();
