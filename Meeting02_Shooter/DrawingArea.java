@@ -18,7 +18,6 @@ class DrawingArea extends JPanel {
     private Image drawingArea;
     private Thread animator;    // thread to draw the
     private Cannon cannon;
-    private Bullet bullet;
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
     // setup the drawing area

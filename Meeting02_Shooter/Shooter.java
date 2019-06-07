@@ -4,19 +4,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 /*
     MatFis pertemuan 2
@@ -59,7 +52,16 @@ class Shooter {
             "Bullets left: " + Integer.toString(limit);
 
     private int cpSize = 230;      // set control panel's width
-
+    public double getBulletMass() {
+        return Double.parseDouble(bulletMass.getText());
+    }
+    public double getWindForce() {
+        return Double.parseDouble(windForce.getText());
+    }
+    public double getWindDirection() {
+        return Double.parseDouble(windDirection.getText());
+    }
+    
     public Shooter() {
         // setup the frame
         frame = new JFrame("Graphing App");
@@ -125,7 +127,7 @@ class Shooter {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
                         if(shot < limit) {
-                            bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()), drawingArea.getTime());
+                            bullet = new Bullet(cannon.getBarrelWidth() / 2, (int) cannon.getBarrelMouthX(), (int) cannon.getBarrelMouthY(), cannon.getAngle(), Double.parseDouble(initialVelocity.getText()), drawingArea.getTime(), getBulletMass(), getWindForce(), getWindDirection());
                             bullet.shoot();
                             drawingArea.addBullet(bullet);
                             shot++;
