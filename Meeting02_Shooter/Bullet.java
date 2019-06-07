@@ -1,5 +1,3 @@
-package Meeting02_Shooter;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,7 +8,7 @@ class Bullet {
     private int positionX;
     private int positionY;
     private double radius;
-    private final static double BASE_VELOCITY = 50;
+    private double BASE_VELOCITY = 50;
     private double velocityX;
     private double velocityY;
     private final static double GRAVITY = 9.8;
@@ -18,10 +16,11 @@ class Bullet {
     private boolean shot = false;
     private final static Color COLOR = Color.darkGray;
 
-    public Bullet(double radius, int originX, int originY, double angle) {
+    public Bullet(double radius, int originX, int originY, double angle, double baseVelocity) {
         this.radius = radius;
         this.originX = originX;
         this.originY = originY;
+        this.BASE_VELOCITY = baseVelocity;
         this.velocityX = BASE_VELOCITY * Math.cos(angle);
         this.velocityY = BASE_VELOCITY * Math.sin(angle);
     }
