@@ -33,11 +33,15 @@ class Bullet {
     public void setTime(double time) {
         timeInitial = time;
     }
-
-    public int getPositionY() {
+    public double getPositionX() {
+        return positionX;
+    }
+    public double getPositionY() {
         return positionY;
     }
-
+    public double getRadius() {
+        return radius;
+    }
     public void shoot() {
         shot = true;
     }
@@ -73,7 +77,7 @@ class Bullet {
         g2.setColor(COLOR);
 
         // draw the bullet
-        g2.fillOval((int) (positionX + radius), (int) (positionY - radius), size, size);
+        g2.fillOval((int) (positionX - radius), (int) (positionY - radius), size, size);
         g2.setColor(tempColor);
     }
 }

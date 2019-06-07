@@ -43,12 +43,13 @@ class Shooter {
     // game area
     private Bullet bullet = null;
     private Cannon cannon;
-    private static int limit = 5; // change capacity to limit the number of bullets
+    private static int limit = 10; // change capacity to limit the number of bullets
     private static int shot = 0;
     private static String INSTRUCTION = "Welcome to Cannon Simulation!\n" +
             "\nMove cannon's position = W A S D\n" +
             "Move shooting direction = Left | Right \n" +
             "Launch bullet = Space\n" +
+            "Try to keep the bullet inside the target\nfor as long as possible\n"+
             "Bullets left: " + Integer.toString(limit);
 
     private int cpSize = 230;      // set control panel's width
@@ -61,7 +62,6 @@ class Shooter {
     public double getWindDirection() {
         return Double.parseDouble(windDirection.getText());
     }
-    
     public Shooter() {
         // setup the frame
         frame = new JFrame("Graphing App");
@@ -132,10 +132,11 @@ class Shooter {
                             drawingArea.addBullet(bullet);
                             shot++;
                             INSTRUCTION = "Welcome to Cannon Simulation!\n" +
-                                            "\nMove cannon's position = W A S D\n" +
-                                            "Move shooting direction = Left | Right \n" +
-                                            "Launch bullet = Space\n" +
-                                            "Bullets left: " + Integer.toString(limit - shot);
+                            "\nMove cannon's position = W A S D\n" +
+                            "Move shooting direction = Left | Right \n" +
+                            "Launch bullet = Space\n" +
+                            "Try to keep the bullet inside the target\nfor as long as possible\n"+
+                            "Bullets left: " + Integer.toString(limit - shot);
                             instruction.setText(INSTRUCTION);
                         }
                         break;
@@ -160,7 +161,9 @@ class Shooter {
                 }
             }
         });
-
+        // Add target
+        Target target = new Target(75, frame.getWidth() * 3 / 5, drawingArea.getTime(), frame.getHeight());
+        drawingArea.setTarget(target);
         drawingArea.start();
     }
 
