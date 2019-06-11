@@ -33,6 +33,10 @@ public class DrawingArea extends JPanel {
         if(!pause) pause = true;
         else pause = false;
     }
+    public void callGravity() {
+        for(Ball b : balls)
+            b.toggleGravity();
+    }
     public void start() {
         animator.start();
     }
@@ -72,10 +76,12 @@ public class DrawingArea extends JPanel {
             //clear screen
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setFont(new Font("Consolas", Font.PLAIN, 24));
+            g.setFont(new Font("Consolas", Font.PLAIN, 20));
             g.setColor(Color.BLACK);
             g.drawString("Press Space to show the control panel.", 20, 30);
-            g.drawString("Press P to pause the simulation.", 20, 70);
+            g.drawString("Press P to pause the simulation.", 20, 60);
+            g.drawString("Press G to toggle gravity on/off.", 20, 90);
+            
             for(int i = 0; i < balls.size(); i++) {
                 balls.get(i).draw(g);
                 g.setFont(new Font("Consolas", Font.PLAIN, 24));

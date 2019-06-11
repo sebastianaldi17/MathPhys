@@ -63,6 +63,8 @@ public class Dribble {
                     else control.setVisible(true);
                 } else if(KeyEvent.VK_P == e.getKeyCode()) {
                     drawingArea.trigger(); // pause/play
+                } else if(KeyEvent.VK_G == e.getKeyCode()) {
+                    drawingArea.callGravity();
                 }
             }
         });

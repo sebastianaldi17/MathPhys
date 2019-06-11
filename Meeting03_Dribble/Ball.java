@@ -12,7 +12,7 @@ public class Ball {
     private double velocityY;
     private Color ballColor;
     private double e;        // ball's coefficient of resistution
-    private final static double GRAVITY = 0.5;  // use custom gravity
+    private double GRAVITY = 0.5;  // use custom gravity
 
     public Ball(double positionX, double positionY, double radius, double velocityX, double velocityY, Color ballColor, double elasticity) {
         this.radius = radius;
@@ -35,6 +35,10 @@ public class Ball {
     }
     public double getE() {
         return e;
+    }
+    public void toggleGravity() {
+        if(GRAVITY != 0) GRAVITY = 0;
+        else GRAVITY = 0.5;
     }
     // drawing function
     public void draw(Graphics g) {
