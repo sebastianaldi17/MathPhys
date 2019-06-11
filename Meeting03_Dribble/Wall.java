@@ -81,4 +81,16 @@ public class Wall {
     public double getWidth() {
         return width;
     }
+    public double getX0() {
+        return startX;
+    }
+    public double getX1() {
+        return endX;
+    }
+    public double getY0() {
+        return startY;
+    }
+    public double getY1() {
+        return endY;
+    }
 }

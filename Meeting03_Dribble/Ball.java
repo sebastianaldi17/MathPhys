@@ -73,6 +73,14 @@ public class Ball {
                 else if(w.getHeight() == 0) {
                     velocityY = -e * velocityY;
                 }
+                // if the wall is slanted/diagonal
+                else {
+                    Vector normal = w.normalLine(); // Get the wall's normal vector
+                    double c = velocityX*normal.getX() + velocityY*normal.getY();
+                    Vector proj = new Vector(c*normal.getX(), c*normal.getY()); // proj_N V = (vx*nx + vy*ny)*<nx , ny>
+                    velocityX = 2*proj.getX() - velocityX; // V' = 2*proj - v
+                    velocityY = 2*proj.getY() - velocityY;
+                }
             }
         }
     }

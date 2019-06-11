@@ -172,7 +172,7 @@ public class Dribble {
         walls.add(new Wall(1300, 100, 50, 100, Color.black));	// horizontal top
         walls.add(new Wall(50, 600, 1300, 600, Color.black));  // horizontal bottom
         walls.add(new Wall(1300, 100, 1300, 600, Color.black));  // vertical right
-        walls.add(new Wall(50, 600, 50, 100, Color.black));  // vertical left
+        walls.add(new Wall(500, 600, 50, 100, Color.black));  // vertical left
     }
 
     public static void main(String[] args) {
