@@ -49,7 +49,7 @@ public class Dribble {
 
         // Create control panel in separate frame
         JFrame control = new JFrame("Control Panel");
-        control.setSize(500, 500);
+        control.setSize(400, 800);
         control.setBackground(Color.WHITE);
         control.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         control.setVisible(false);
@@ -70,7 +70,7 @@ public class Dribble {
         });
 
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(8, 2));
+        buttons.setLayout(new GridLayout(14, 2));
 
         // pX, pY, radius, vX, vY, color
         JLabel posXL = new JLabel("Position X: ");
@@ -124,7 +124,9 @@ public class Dribble {
                 int ballRad = Integer.parseInt(ballR.getText());
                 int ballVX = Integer.parseInt(velX.getText());
                 int ballVY = Integer.parseInt(velY.getText());
-                drawingArea.addBall(new Ball(ballX, ballY, ballRad, ballVX, ballVY, new Color(Integer.parseInt(rT.getText()), Integer.parseInt(gT.getText()), Integer.parseInt(bT.getText())), Double.parseDouble(eF.getText())));
+                drawingArea.addBall(new Ball(ballX, ballY, ballRad, ballVX, ballVY,
+                                    new Color(Integer.parseInt(rT.getText()),Integer.parseInt(gT.getText()), Integer.parseInt(bT.getText())),
+                                    Double.parseDouble(eF.getText())));
             }
         });
         
@@ -146,11 +148,59 @@ public class Dribble {
         delBalls.add(delButton);
         delBalls.add(index);
         
-
         buttons.add(delBalls);
-        
+        // Add text fields for the walls
+        JLabel wallIndexL = new JLabel("<html>Wall index<br/> Up = 1, Down = 2<br>Left = 3, Right = 4</html>");
+        JTextField wallIndex = new JTextField("3");
+        JLabel wallx0L = new JLabel("Wall x0");
+        JTextField wallx0 = new JTextField();
+        JLabel wallx1L = new JLabel("Wall x1");
+        JTextField wallx1 = new JTextField();
+        JLabel wally0L = new JLabel("Wall y0");
+        JTextField wally0 = new JTextField();
+        JLabel wally1L = new JLabel("Wall y1");
+        JTextField wally1 = new JTextField();
+
+        buttons.add(wallIndexL);
+        buttons.add(wallIndex);
+        buttons.add(wallx0L);
+        buttons.add(wallx0);
+        buttons.add(wallx1L);
+        buttons.add(wallx1);
+        buttons.add(wally0L);
+        buttons.add(wally0);
+        buttons.add(wally1L);
+        buttons.add(wally1);
+
+        // Add buttons for getting and setting wall values
+        JButton getWall = new JButton("Get wall values");
+        JButton setWall = new JButton("Set wall values");
+        getWall.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ArrayList<Wall> currentWalls = drawingArea.getWalls();
+                Wall tempWall = currentWalls.get(Integer.parseInt(wallIndex.getText()) - 1);
+                wallx0.setText(Double.toString(tempWall.getX0()));
+                wallx1.setText(Double.toString(tempWall.getX1()));
+                wally0.setText(Double.toString(tempWall.getY0()));
+                wally1.setText(Double.toString(tempWall.getY1()));
+            }
+        });
+        setWall.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawingArea.setWall(Integer.parseInt(wallIndex.getText()),
+                                    Double.parseDouble(wallx0.getText()),
+                                    Double.parseDouble(wallx1.getText()),
+                                    Double.parseDouble(wally0.getText()),
+                                    Double.parseDouble(wally1.getText())
+                );
+            }
+        });
+        buttons.add(getWall);
+        buttons.add(setWall);
+
         control.add(buttons);
-        
         // create the walls
         createWalls();
 
@@ -168,11 +218,10 @@ public class Dribble {
     private void createWalls() {
         // vertical wall must be defined in clockwise direction
         // horizontal wall must be defined in counter clockwise direction
-
         walls.add(new Wall(1300, 100, 50, 100, Color.black));	// horizontal top
         walls.add(new Wall(50, 600, 1300, 600, Color.black));  // horizontal bottom
-        walls.add(new Wall(1300, 100, 1300, 600, Color.black));  // vertical right
         walls.add(new Wall(500, 600, 50, 100, Color.black));  // vertical left
+        walls.add(new Wall(1300, 100, 1300, 600, Color.black));  // vertical right
     }
 
     public static void main(String[] args) {

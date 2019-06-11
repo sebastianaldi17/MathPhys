@@ -40,7 +40,12 @@ public class DrawingArea extends JPanel {
     public void start() {
         animator.start();
     }
-
+    public ArrayList<Wall> getWalls() {
+        return walls;
+    }
+    public void setWall(int index, double x0, double x1, double y0, double y1) {
+        walls.get(index-1).setWall(x0, x1, y0, y1);
+    }
     private void eventLoop() {
         drawingArea = (BufferedImage) createImage(width, height);
         while (true) {

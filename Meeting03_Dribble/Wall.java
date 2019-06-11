@@ -93,4 +93,10 @@ public class Wall {
     public double getY1() {
         return endY;
     }
+    public void setWall(double x0, double x1, double y0, double y1) {
+        startX = x0;
+        endX = x1;
+        startY = y0;
+        endY = y1;
+    }
 }
