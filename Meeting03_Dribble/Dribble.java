@@ -1,4 +1,4 @@
-package Meeting03_Dribble;
+//package Meeting03_Dribble;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
     TODO:
      0. Review about elastic and inelastic collisions. What happened when you change the coefficient of resistution (COR)?
+        The higher the coefficient, the bouncier the balls become (going past 1.0  or below 0.1 will cause some problems).
      1. Add more balls with different colors, sizes, and velocities
      2. Create UI to add new balls and delete some instances
      3. Add COR field to the UI, so user can choose between using different COR than the default or not
@@ -40,7 +41,7 @@ public class Dribble {
         // create the ball
         balls.add(new Ball(300, 200, 50, 10, 10, Color.blue));
         balls.add(new Ball(300, 100, 20, 3, -3, Color.green));
-
+        balls.add(new Ball(300, 150, 25, -5, 5, Color.red)); // here, another ball :P
         drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight(), balls, walls);
         frame.add(drawingArea);
         drawingArea.start();
