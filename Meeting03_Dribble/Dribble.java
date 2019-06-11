@@ -1,8 +1,20 @@
+
 //package Meeting03_Dribble;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /*
@@ -28,13 +40,110 @@ public class Dribble {
     private ArrayList<Ball> balls = new ArrayList<>();
 
     public Dribble() {
-        //configure the main canvas
+        // configure the main canvas
         frame = new JFrame("Dribbling Balls");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setBackground(Color.WHITE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+        // Create control panel in separate frame
+        JFrame control = new JFrame("Control Panel");
+        control.setSize(500, 500);
+        control.setBackground(Color.WHITE);
+        control.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        control.setVisible(false);
+    
+        // Add listener to summon control panel
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {;
+                if(KeyEvent.VK_SPACE == e.getKeyCode()) {
+                    if(control.isVisible()) control.setVisible(false);
+                    else control.setVisible(true);
+                }
+            }
+        });
+
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(7, 2));
+
+        // pX, pY, radius, vX, vY, color
+        JLabel posXL = new JLabel("Position X: ");
+        JTextField posX = new JTextField("300");
+        JLabel posYL = new JLabel("Position Y: ");
+        JTextField posY = new JTextField("300");
+        JLabel ballRL = new JLabel("Ball radius: ");
+        JTextField ballR = new JTextField("25");
+        JLabel velXL = new JLabel("Velocity X: ");
+        JTextField velX = new JTextField("5");
+        JLabel velYL = new JLabel("Velocity Y: ");
+        JTextField velY = new JTextField("5");
+        JLabel colL = new JLabel("Color: ");
+        JPanel col = new JPanel();
+        col.setLayout(new GridLayout(3, 2));
+        JLabel rL = new JLabel("Red (0-255):");
+        JLabel gL = new JLabel("Green (0-255):");
+        JLabel bL = new JLabel("Blue (0-255):");
+        JTextField rT = new JTextField("0");
+        JTextField gT = new JTextField("100");
+        JTextField bT = new JTextField("255");
+        col.add(rL);
+        col.add(rT);
+        col.add(gL);
+        col.add(gT);
+        col.add(bL);
+        col.add(bT);
+        buttons.add(posXL);
+        buttons.add(posX);
+        buttons.add(posYL);
+        buttons.add(posY);
+        buttons.add(ballRL);
+        buttons.add(ballR);
+        buttons.add(velXL);
+        buttons.add(velX);
+        buttons.add(velYL);
+        buttons.add(velY);
+        buttons.add(colL);
+        buttons.add(col);
+
+        // Add "new ball" button
+        JButton addBall = new JButton("Add new ball");
+        addBall.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int ballX = Integer.parseInt(posX.getText());
+                int ballY = Integer.parseInt(posY.getText());
+                int ballRad = Integer.parseInt(ballR.getText());
+                int ballVX = Integer.parseInt(velX.getText());
+                int ballVY = Integer.parseInt(velY.getText());
+                drawingArea.addBall(new Ball(ballX, ballY, ballRad, ballVX, ballVY, new Color(Integer.parseInt(rT.getText()), Integer.parseInt(gT.getText()), Integer.parseInt(bT.getText()))));
+            }
+        });
+        
+
+        // Add control panel to new frame
+        buttons.add(addBall);
+        
+        // Add "delete ball" button
+        JPanel delBalls = new JPanel();
+        delBalls.setLayout(new GridLayout(1, 2));
+        JTextField index = new JTextField("1");
+        JButton delButton = new JButton("<html>Delete by index<br/>     Input => </html>");
+        delButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drawingArea.delBall(Integer.parseInt(index.getText()));
+            }
+        });
+        delBalls.add(delButton);
+        delBalls.add(index);
+        
+
+        buttons.add(delBalls);
+        
+        control.add(buttons);
+        
         // create the walls
         createWalls();
 
@@ -42,6 +151,8 @@ public class Dribble {
         balls.add(new Ball(300, 200, 50, 10, 10, Color.blue));
         balls.add(new Ball(300, 100, 20, 3, -3, Color.green));
         balls.add(new Ball(300, 150, 25, -5, 5, Color.red)); // here, another ball :P
+        
+        // Add the drawing area
         drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight(), balls, walls);
         frame.add(drawingArea);
         drawingArea.start();

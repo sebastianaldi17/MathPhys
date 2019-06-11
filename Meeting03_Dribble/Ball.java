@@ -22,7 +22,16 @@ public class Ball {
         this.velocityY = velocityY;
         this.ballColor = ballColor;
     }
-
+    // Getters
+    public double getX() {
+        return positionX;
+    }
+    public double getY() {
+        return positionY;
+    }
+    public double getRadius() {
+        return radius;
+    }
     // drawing function
     public void draw(Graphics g) {
         Color tempColor = g.getColor();

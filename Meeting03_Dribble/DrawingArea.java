@@ -22,7 +22,12 @@ public class DrawingArea extends JPanel {
         this.walls = walls;
         animator = new Thread(this::eventLoop);
     }
-
+    public void addBall(Ball ball) {
+        balls.add(ball);
+    }
+    public void delBall(int index) {
+        balls.remove(index - 1);
+    }
     public void start() {
         animator.start();
     }
@@ -59,11 +64,14 @@ public class DrawingArea extends JPanel {
             Graphics g = drawingArea.getGraphics();
 
             //clear screen
-            g.setColor(Color.white);
+            g.setColor(Color.WHITE);
             g.fillRect(0, 0, getWidth(), getHeight());
-
-            for(Ball b : balls) {
-                b.draw(g);
+            g.setFont(new Font("Consolas", Font.PLAIN, 24));
+            g.setColor(Color.BLACK);
+            g.drawString("Press Space to show the control panel.", 20, 20);
+            for(int i = 0; i < balls.size(); i++) {
+                balls.get(i).draw(g);
+                g.drawString(Integer.toString(i+1), (int)balls.get(i).getX()-8, (int)balls.get(i).getY());
             }
 
             for(Wall w : walls) {
