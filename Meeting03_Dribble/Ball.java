@@ -11,16 +11,17 @@ public class Ball {
     private double velocityX;                   // ball's velocity
     private double velocityY;
     private Color ballColor;
-    private final static double e = 0.9;        // ball's coefficient of resistution
+    private double e;        // ball's coefficient of resistution
     private final static double GRAVITY = 0.5;  // use custom gravity
 
-    public Ball(double positionX, double positionY, double radius, double velocityX, double velocityY, Color ballColor) {
+    public Ball(double positionX, double positionY, double radius, double velocityX, double velocityY, Color ballColor, double elasticity) {
         this.radius = radius;
         this.positionX = positionX;
         this.positionY = positionY;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.ballColor = ballColor;
+        this.e = elasticity;
     }
     // Getters
     public double getX() {
@@ -31,6 +32,9 @@ public class Ball {
     }
     public double getRadius() {
         return radius;
+    }
+    public double getE() {
+        return e;
     }
     // drawing function
     public void draw(Graphics g) {

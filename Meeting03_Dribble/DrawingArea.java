@@ -12,6 +12,7 @@ public class DrawingArea extends JPanel {
     private ArrayList<Wall> walls;
     private Thread animator;
     private BufferedImage drawingArea;
+    private boolean pause = false;
 
     public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls) {
         super(null);
@@ -27,6 +28,10 @@ public class DrawingArea extends JPanel {
     }
     public void delBall(int index) {
         balls.remove(index - 1);
+    }
+    public void trigger() {
+        if(!pause) pause = true;
+        else pause = false;
     }
     public void start() {
         animator.start();
@@ -49,6 +54,7 @@ public class DrawingArea extends JPanel {
 
     private void update()
     {
+        if(pause) return;
         for(Ball b : balls)
         {
             b.move();
@@ -68,10 +74,14 @@ public class DrawingArea extends JPanel {
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setFont(new Font("Consolas", Font.PLAIN, 24));
             g.setColor(Color.BLACK);
-            g.drawString("Press Space to show the control panel.", 20, 20);
+            g.drawString("Press Space to show the control panel.", 20, 30);
+            g.drawString("Press P to pause the simulation.", 20, 70);
             for(int i = 0; i < balls.size(); i++) {
                 balls.get(i).draw(g);
+                g.setFont(new Font("Consolas", Font.PLAIN, 24));
                 g.drawString(Integer.toString(i+1), (int)balls.get(i).getX()-8, (int)balls.get(i).getY());
+                g.setFont(new Font("Consolas", Font.PLAIN, 14));
+                g.drawString("e:" + balls.get(i).getE(), (int)balls.get(i).getX()-14, (int)balls.get(i).getY()+(int)balls.get(i).getRadius() + 12);
             }
 
             for(Wall w : walls) {

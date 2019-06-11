@@ -61,12 +61,14 @@ public class Dribble {
                 if(KeyEvent.VK_SPACE == e.getKeyCode()) {
                     if(control.isVisible()) control.setVisible(false);
                     else control.setVisible(true);
+                } else if(KeyEvent.VK_P == e.getKeyCode()) {
+                    drawingArea.trigger(); // pause/play
                 }
             }
         });
 
         JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(7, 2));
+        buttons.setLayout(new GridLayout(8, 2));
 
         // pX, pY, radius, vX, vY, color
         JLabel posXL = new JLabel("Position X: ");
@@ -88,6 +90,8 @@ public class Dribble {
         JTextField rT = new JTextField("0");
         JTextField gT = new JTextField("100");
         JTextField bT = new JTextField("255");
+        JLabel eL = new JLabel("Coefficient of Restitution:");
+        JTextField eF = new JTextField("0.9");
         col.add(rL);
         col.add(rT);
         col.add(gL);
@@ -106,7 +110,8 @@ public class Dribble {
         buttons.add(velY);
         buttons.add(colL);
         buttons.add(col);
-
+        buttons.add(eL);
+        buttons.add(eF);
         // Add "new ball" button
         JButton addBall = new JButton("Add new ball");
         addBall.addActionListener(new ActionListener() {
@@ -117,7 +122,7 @@ public class Dribble {
                 int ballRad = Integer.parseInt(ballR.getText());
                 int ballVX = Integer.parseInt(velX.getText());
                 int ballVY = Integer.parseInt(velY.getText());
-                drawingArea.addBall(new Ball(ballX, ballY, ballRad, ballVX, ballVY, new Color(Integer.parseInt(rT.getText()), Integer.parseInt(gT.getText()), Integer.parseInt(bT.getText()))));
+                drawingArea.addBall(new Ball(ballX, ballY, ballRad, ballVX, ballVY, new Color(Integer.parseInt(rT.getText()), Integer.parseInt(gT.getText()), Integer.parseInt(bT.getText())), Double.parseDouble(eF.getText())));
             }
         });
         
@@ -148,9 +153,9 @@ public class Dribble {
         createWalls();
 
         // create the ball
-        balls.add(new Ball(300, 200, 50, 10, 10, Color.blue));
-        balls.add(new Ball(300, 100, 20, 3, -3, Color.green));
-        balls.add(new Ball(300, 150, 25, -5, 5, Color.red)); // here, another ball :P
+        balls.add(new Ball(300, 200, 50, 10, 10, Color.blue, 0.8));
+        balls.add(new Ball(300, 100, 20, 3, -3, Color.green, 0.7));
+        balls.add(new Ball(300, 150, 25, -5, 5, Color.red, 0.6)); // here, another ball :P
         
         // Add the drawing area
         drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight(), balls, walls);
