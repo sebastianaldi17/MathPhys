@@ -164,4 +164,12 @@ public class Ball {
             }
         }
     }
+
+    // Check if ball makes contact with hole
+    public boolean holeCollide(Hole h) {
+        double dist = h.distance(this);
+        double sumRadius = h.getRadius() + radius;
+        if(dist <= sumRadius) return true;
+        else return false;
+    }
 }

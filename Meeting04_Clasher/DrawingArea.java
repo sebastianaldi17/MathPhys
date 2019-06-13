@@ -22,6 +22,7 @@ public class DrawingArea extends JPanel {
     private int width;
     private ArrayList<Ball> balls;
     private ArrayList<Wall> walls;
+    private Hole hole;
     private Thread animator;
     private BufferedImage drawingArea;
 
@@ -34,6 +35,7 @@ public class DrawingArea extends JPanel {
         this.walls = walls;
         hitter = balls.get(hitterIndex);
         this.destination = destination;
+        hole = new Hole(500, 500, 30);
         guideline = new Line2D.Double(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
         animator = new Thread(this::eventLoop);
     }
@@ -82,6 +84,7 @@ public class DrawingArea extends JPanel {
             b.move();
             b.ballCollide(balls);
             b.wallCollide(walls);
+            if(b.holeCollide(hole) && !hitter.equals(b)) balls.remove(b);
         }
         guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
@@ -100,6 +103,7 @@ public class DrawingArea extends JPanel {
             g.setColor(Color.black);
             g.setFont(new Font("Consolas", Font.PLAIN, 24));
             g.drawString("Power: " + Integer.toString((int)time), 30, 30);
+            hole.draw(g);
             for(Ball b : balls) {
                 b.draw(g);
             }
