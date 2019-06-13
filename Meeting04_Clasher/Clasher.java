@@ -1,4 +1,4 @@
-package Meeting04_Clasher;
+//package Meeting04_Clasher;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -42,7 +42,7 @@ public class Clasher {
         createWalls();
 
         // create the ball
-        balls.add(new Ball(300, 200, 50, Color.blue, 10));
+        balls.add(new Ball(600, 400, 30, Color.blue, 10));
         hitter = new Ball(400, 400, 20, Color.green, 4);
         balls.add(hitter);
         destination = new Vector(hitter.getPositionX(), hitter.getPositionY());
@@ -90,10 +90,9 @@ public class Clasher {
         // vertical wall must be defined in clockwise direction
         // horizontal wall must be defined in counter clockwise direction
 
-        walls.add(new Wall(1200, 100, 100, 100, Color.black));	// horizontal top
         walls.add(new Wall(100, 600, 1200, 600, Color.black));  // horizontal bottom
-        walls.add(new Wall(1200, 100, 1200, 600, Color.black));  // vertical right
-        walls.add(new Wall(100, 600, 100, 100, Color.black));  // vertical left
+        walls.add(new Wall(1200, 600, 300, 100, Color.black));  // vertical right
+        walls.add(new Wall(100, 600, 300, 100, Color.black));  // vertical left
     }
 
     public static void main(String[] args) {
