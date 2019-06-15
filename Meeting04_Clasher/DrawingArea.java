@@ -84,8 +84,14 @@ public class DrawingArea extends JPanel {
             b.move();
             b.ballCollide(balls);
             b.wallCollide(walls);
-            if(b.getPositionY() - b.getRadius() >= height && !hitter.equals(b)) balls.remove(b);
-            if(b.holeCollide(hole) && !hitter.equals(b)) balls.remove(b);
+            if(b.getPositionY() - b.getRadius() >= height && !hitter.equals(b)) {
+                balls.remove(b);
+                break;
+            }
+            if(b.holeCollide(hole) && !hitter.equals(b)) {
+                balls.remove(b);
+                break; // break statement is needed to prevent ConcurrentModificationException. May cause some other bugs though
+            }
         }
         guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
