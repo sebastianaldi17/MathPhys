@@ -90,9 +90,11 @@ public class Clasher {
         // vertical wall must be defined in clockwise direction
         // horizontal wall must be defined in counter clockwise direction
 
-        walls.add(new Wall(100, 600, 1200, 600, Color.black));  // horizontal bottom
-        walls.add(new Wall(1200, 600, 300, 100, Color.black));  // vertical right
-        walls.add(new Wall(100, 600, 300, 100, Color.black));  // vertical left
+        walls.add(new Wall(100, 600, 500, frame.getHeight(), Color.black));  // horizontal down 2
+        walls.add(new Wall(700, frame.getHeight(), 1200, 600, Color.black));  // horizontal down 2
+        walls.add(new Wall(1200, 600, 300, 100, Color.black));  // diagonal right
+        walls.add(new Wall(100, 600, 300, 100, Color.black));  // diagonal left 
+        
     }
 
     public static void main(String[] args) {

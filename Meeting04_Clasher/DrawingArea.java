@@ -35,7 +35,7 @@ public class DrawingArea extends JPanel {
         this.walls = walls;
         hitter = balls.get(hitterIndex);
         this.destination = destination;
-        hole = new Hole(500, 500, 30);
+        hole = new Hole(300, 500, 30);
         guideline = new Line2D.Double(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
         animator = new Thread(this::eventLoop);
     }
@@ -84,6 +84,7 @@ public class DrawingArea extends JPanel {
             b.move();
             b.ballCollide(balls);
             b.wallCollide(walls);
+            if(b.getPositionY() - b.getRadius() >= height && !hitter.equals(b)) balls.remove(b);
             if(b.holeCollide(hole) && !hitter.equals(b)) balls.remove(b);
         }
         guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
