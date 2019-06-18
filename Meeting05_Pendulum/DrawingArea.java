@@ -1,5 +1,6 @@
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Graphics;
@@ -19,14 +20,18 @@ public class DrawingArea extends JPanel {
 		//Image where functions are drawn, which then drawn to the canvas
 		BufferedImage dbImage;	
         
+        //Variables
         private boolean press;
 		private int canvasHeight;
-		private int canvasStartY;
+        private int canvasStartY;
+        private double globalTime = 0;
+        private double timeSpeed = 1.0;
+        private int score = 0;
 		
-		//Variables
 		private Ball selectedBall;
 		private Rope selectedRope;
-        		
+        private Target target;
+
 		private boolean isPressed;
 		private double mousePressedX;
 		private double mousePressedY;
@@ -44,7 +49,8 @@ public class DrawingArea extends JPanel {
         setBounds(0, 0, width, height);
         canvasHeight = getHeight() - getInsets().top;
         canvasStartY = getInsets().top;	
-
+        // create the target
+        target = new Target(getWidth()/2, 25, getHeight());
         //create the pendulum
         for(int i=0; i<maxBalls; i++)
             addPendulum();
@@ -146,6 +152,7 @@ public class DrawingArea extends JPanel {
         dbImage = (BufferedImage)createImage(getWidth(), getHeight());
         while(true)
         {
+            globalTime += timeSpeed;
             update();
             render();
             printScreen();
@@ -159,6 +166,7 @@ public class DrawingArea extends JPanel {
         {
             for(Ball b: balls)
             {					
+                if(target.distance(b) < target.getRadius() + b.getRadius()) score++;
                 b.move();
                 // Collision checking in Quadratic time
                 for(Ball b2: balls) {
@@ -176,6 +184,8 @@ public class DrawingArea extends JPanel {
                 }
             }
         }
+        // Update target position
+        target.move(globalTime);
     }
     
     public void render()
@@ -189,6 +199,11 @@ public class DrawingArea extends JPanel {
             g.setColor(new Color(200,200,150));
             g.fillRect(0, 0, getWidth(), canvasHeight);
             
+            // display the score
+            g.setColor(Color.black);
+            g.setFont(new Font("Consolas", Font.PLAIN, 20));
+            g.drawString("Score: " + Integer.toString(score), 25, 25);
+
             //draw the balls
             for(Ball b: balls)
             {
@@ -200,7 +215,10 @@ public class DrawingArea extends JPanel {
             for(Rope r: ropes)
             {				
                 r.draw(g);
-            }							
+            }
+            
+            // draw target
+            target.draw(g);
         }
     }
     
