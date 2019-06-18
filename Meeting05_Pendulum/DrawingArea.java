@@ -32,7 +32,7 @@ public class DrawingArea extends JPanel {
 		private double mousePressedY;
         private double time;
         
-		private int maxBalls = 1;
+		private int maxBalls = 2;
 		private double ropeLength = 400;
 		private double ballSize = 40;
 		private double firstRopeX = 600;
