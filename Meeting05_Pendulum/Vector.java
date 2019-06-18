@@ -1,5 +1,4 @@
-package Meeting05_Pendulum;
-
+//package Meeting05_Pendulum;
 
 public class Vector {
 	double x;			// the x component of the vector

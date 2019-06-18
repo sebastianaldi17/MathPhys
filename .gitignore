@@ -27,3 +27,4 @@ out/
 
 # Batch file
 *.bat
+.vscode
