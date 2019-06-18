@@ -160,6 +160,20 @@ public class DrawingArea extends JPanel {
             for(Ball b: balls)
             {					
                 b.move();
+                // Collision checking in Quadratic time
+                for(Ball b2: balls) {
+                    if(!b.equals(b2)) { // Check if it is not itself
+                        double rsum = b.getRadius() + b2.getRadius();
+                        double distance = Math.sqrt(Math.pow(b.getPositionX() - b2.getPositionX(), 2)  + Math.pow(b.getPositionY() - b2.getPositionY(), 2));
+                        if(distance <= rsum) { // Check if the ball collides
+                            // X Velocity Transfer
+                            double v1 = b.getVx();
+                            double v2 = b2.getVx();
+                            b.setVx(v2);
+                            b2.setVx(v1);
+                        }
+                    }
+                }
             }
         }
     }

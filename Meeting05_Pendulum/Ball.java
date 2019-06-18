@@ -20,9 +20,6 @@ public class Ball {
 	
 	// The ball's deceleration or fraction
 	private final static double DECELERATION = 0.0005;
-
-	// Elasticity coefficient for collision between balls
-	private final static double e = 0.9;
 	
 	// The ball's state whether it is attached to a rope or not
 	private boolean isAttached;
@@ -170,6 +167,17 @@ public class Ball {
 	{
 		this.velocity.x = vx;
 	}	
+	// function to set the velocity of the circle in positionY-axis
+	public double getVy()
+	{
+		return velocity.y;
+	}
+
+	// function to set the velocity of the circle in positionX-axis
+	public double getVx()
+	{
+		return velocity.x;
+	}
 
 	public boolean equals(Object otherObj)
 	{
