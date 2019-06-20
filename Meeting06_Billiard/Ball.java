@@ -1,6 +1,8 @@
+
 //package Meeting06_Billiard;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -52,6 +54,7 @@ public class Ball {
 		g.setColor(ballColor);
 		g.fillOval((int) (positionX - RADIUS), (int) (positionY - RADIUS), (int) (2 * RADIUS), (int) (2 * RADIUS));
 		g.setColor(Color.white);
+		g.setFont(new Font("Times Roman", Font.PLAIN, 12));
 		g.drawString(Integer.toString(ballNumber), (int)positionX, (int)positionY);
 		g.setColor(tempColor);
 	}

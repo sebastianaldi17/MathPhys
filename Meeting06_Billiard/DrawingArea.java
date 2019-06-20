@@ -1,7 +1,9 @@
+
 //package Meeting06_Billiard;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.geom.Line2D;
@@ -10,24 +12,29 @@ import java.util.ArrayList;
 
 public class DrawingArea extends JPanel {
     private double time = 0;
-    private final static double TIME_INCREASE = 0.1;
+    private final static double TIME_INCREASE = 0.25;
     private boolean press = false;
     private int height;
     private int width;
     private ArrayList<Ball> balls;
     private ArrayList<Wall> walls;
+    private Line2D guideline;
+    private Vector destination;
     private Thread animator;
     private BufferedImage drawingArea;
+    private Ball hitter;
 
-    public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls) {
+    public DrawingArea(int width, int height, ArrayList<Ball> balls, ArrayList<Wall> walls, Vector destination, Ball hitter) {
         super(null);
         this.height = height;
         this.width = width;
         setBounds(0, 0, width, height);
         this.balls = balls;
         this.walls = walls;
-
+        this.hitter = hitter;
+        this.destination = destination;
         animator = new Thread(this::eventLoop);
+        guideline = new Line2D.Double(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
 
     public void start() {
@@ -73,6 +80,7 @@ public class DrawingArea extends JPanel {
         {
             b.move();
         }
+        guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
 
     private void render()
@@ -86,6 +94,10 @@ public class DrawingArea extends JPanel {
             g.setColor(Color.white);
             g.fillRect(0, 0, getWidth(), getHeight());
 
+            // set text for power
+            g.setColor(Color.black);
+            g.setFont(new Font("Consolas", Font.PLAIN, 24));
+            g.drawString("Power: " + Integer.toString((int)time), 30, 30);
             for(Ball b : balls) {
                 b.draw(g);
             }
@@ -93,7 +105,10 @@ public class DrawingArea extends JPanel {
             for(Wall w : walls) {
                 w.draw(g);
             }
-
+            if (guideline != null) {
+                g.setColor(Color.red);
+                g.drawLine((int) guideline.getX1(), (int) guideline.getY1(), (int) guideline.getX2(), (int) guideline.getY2() - (int)Ball.RADIUS);
+            }
         }
     }
 

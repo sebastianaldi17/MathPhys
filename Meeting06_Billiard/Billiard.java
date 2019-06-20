@@ -14,6 +14,8 @@
  */
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,11 +24,13 @@ import javax.swing.JFrame;
 
 public class Billiard {
 	private JFrame frame;
+	private Vector destination;
 	private int frameHeight;
 
 	//The collections of walls to be drawn
 	private ArrayList<Wall> walls = new ArrayList<>();
 	private ArrayList<Ball> balls = new ArrayList<>();
+	private Ball hitter;
 
 	private Billiard() {
 		//configure the main canvas
@@ -37,10 +41,44 @@ public class Billiard {
 		frame.setLayout(null);
 		frame.setVisible(true);
 		frameHeight = frame.getHeight() - frame.getInsets().top;
-
 		createObjects();
 
-		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frameHeight, balls, walls);
+		destination = new Vector(hitter.getPositionX(), hitter.getPositionY());
+		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frameHeight, balls, walls, destination, hitter);
+		// Add mouse listeners
+		frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                drawingArea.setPress(true);
+                destination.setX((double) e.getX());
+                destination.setY((double) e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
+                double distanceX = e.getX() - hitter.getPositionX();
+                double distanceY = e.getY() - hitter.getPositionY();
+                double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                hitter.setVelocityX(-drawingArea.getTime() * distanceX / distance);
+                hitter.setVelocityY(-drawingArea.getTime() * distanceY / distance);
+
+                drawingArea.setPress(false);
+            }
+        });
+
+        frame.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                destination.setX((double) e.getX());
+                destination.setY((double) e.getY());
+            }
+        });
+		
 		frame.add(drawingArea);
 
 		drawingArea.start();
@@ -75,7 +113,7 @@ public class Billiard {
 			}
 		}
 		// Add hitter
-		Ball hitter = new Ball(frame.getWidth()/3, frameHeight/2, new Color(0xdbdbdb), 0);
+		hitter = new Ball(frame.getWidth()/3, frameHeight/2, new Color(0xdbdbdb), 0);
 		balls.add(hitter);
 	}
 	private Color randomColor() {
