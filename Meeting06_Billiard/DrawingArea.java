@@ -63,7 +63,7 @@ public class DrawingArea extends JPanel {
             render();
             printScreen();
             try {
-                Thread.sleep(30);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 break;
@@ -73,12 +73,15 @@ public class DrawingArea extends JPanel {
 
     private void update()
     {
-        if(press) {
+        if(press && time < 10) {
             time += TIME_INCREASE;
         }
         for(Ball b : balls)
         {
             b.move();
+            b.wallCollide(walls);
+            b.ballCollide(balls);
+            
         }
         guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }

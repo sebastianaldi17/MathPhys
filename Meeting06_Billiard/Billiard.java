@@ -31,6 +31,8 @@ public class Billiard {
 	private ArrayList<Wall> walls = new ArrayList<>();
 	private ArrayList<Ball> balls = new ArrayList<>();
 	private Ball hitter;
+	private boolean loose = true; // sets if the ball will have huge gaps between, or very tight
+	private boolean betaCollision = true; // uses a hand-made collision detection using arctan, sin, and cos
 
 	private Billiard() {
 		//configure the main canvas
@@ -95,25 +97,42 @@ public class Billiard {
 		walls.add(new Wall(wallWidth + wallX, wallY, wallX, wallY));	// top wall
 		walls.add(new Wall(wallX, wallHeight + wallY, wallX, wallY));	// left wall
 		walls.add(new Wall(wallWidth + wallX, wallY, wallWidth + wallX, wallHeight + wallY));	// bottom wall
-		walls.add(new Wall(wallWidth + wallX, wallHeight + wallY, wallX, wallHeight + wallY));	// right wall
+		walls.add(new Wall(wallX, wallHeight + wallY, wallX + wallWidth, wallHeight + wallY));	// right wall
 
 		// setup inital ball coordinates
 		// "Nyontek dosa" - BeefBurrito
+		double gap = 8;
 		int ballCounter = 0;
 		int[] order = {9,7,12,8,15,6,10,3,14,11,2,13,4,5};
-		balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS-1, frameHeight/2, randomColor(), 1)); // -1 is due to OCD kicks in
-		for(int i = 2; i <= 5; i++) {
-			for(int j = 1; j <= i; j++) {
-				double padUp = (i-1)*Ball.RADIUS + Ball.RADIUS;
-				double padRight = (i-1)*Ball.RADIUS*Math.sqrt(3);
-				Color color = randomColor();
-				if(order[ballCounter] == 8) color = Color.black;
-				balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS + padRight, frameHeight/2 - Ball.RADIUS - padUp + j*2*Ball.RADIUS, color, order[ballCounter]));
-				ballCounter++;
+		if(loose) {
+			// with gap to mitigate bad collision detection
+			balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS - 1, frameHeight/2 - gap, randomColor(), 1, betaCollision)); // -1 is due to OCD kicks in
+			for(int i = 2; i <= 5; i++) {
+				for(int j = 1; j <= i; j++) {
+					double padUp = (i+1)*(Ball.RADIUS);
+					double padRight = (i-1)*(Ball.RADIUS+gap)*Math.sqrt(3);
+					Color color = randomColor();
+					if(order[ballCounter] == 8) color = Color.black;
+					balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS + padRight, frameHeight/2 - Ball.RADIUS - padUp + j*2.5*Ball.RADIUS, color, order[ballCounter], betaCollision));
+					ballCounter++;
+				}
+			}
+		} else {
+			// "perfect smooth edition" with bad collision detection
+			balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS-1, frameHeight/2, randomColor(), 1, betaCollision)); // -1 is due to OCD kicks in
+			for(int i = 2; i <= 5; i++) {
+				for(int j = 1; j <= i; j++) {
+					double padUp = (i-1)*Ball.RADIUS + Ball.RADIUS;
+					double padRight = (i-1)*Ball.RADIUS*Math.sqrt(3);
+					Color color = randomColor();
+					if(order[ballCounter] == 8) color = Color.black;
+					balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS + padRight, frameHeight/2 - Ball.RADIUS - padUp + j*2*Ball.RADIUS, color, order[ballCounter], betaCollision));
+					ballCounter++;
+				}
 			}
 		}
 		// Add hitter
-		hitter = new Ball(frame.getWidth()/3, frameHeight/2, new Color(0xdbdbdb), 0);
+		hitter = new Ball(frame.getWidth()/3, frameHeight/2, new Color(0xdbdbdb), 0, betaCollision);
 		balls.add(hitter);
 	}
 	private Color randomColor() {
