@@ -74,6 +74,9 @@ public class Billiard {
 				ballCounter++;
 			}
 		}
+		// Add hitter
+		Ball hitter = new Ball(frame.getWidth()/3, frameHeight/2, new Color(0xdbdbdb), 0);
+		balls.add(hitter);
 	}
 	private Color randomColor() {
 		Random randomGenerator = new Random();
