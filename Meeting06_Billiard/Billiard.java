@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 /*
 	Matfis pertemuan 6
@@ -59,16 +59,27 @@ public class Billiard {
 		walls.add(new Wall(wallWidth + wallX, wallY, wallWidth + wallX, wallHeight + wallY));	// bottom wall
 		walls.add(new Wall(wallWidth + wallX, wallHeight + wallY, wallX, wallHeight + wallY));	// right wall
 
-		Random randomGenerator = new Random();
-
-		for (int i = 0; i < 3; i++) {
-			int positionX = randomGenerator.nextInt(wallWidth - (int) (Ball.RADIUS)) + wallX + (int) Ball.RADIUS;
-			int positionY = randomGenerator.nextInt(wallHeight - (int) (Ball.RADIUS)) + wallY + (int) Ball.RADIUS;
-			Color color = new Color(randomGenerator.nextInt(255), randomGenerator.nextInt(255), randomGenerator.nextInt(255));
-			balls.add(new Ball(positionX, positionY, color));
+		// setup inital ball coordinates
+		// "Nyontek dosa" - BeefBurrito
+		int ballCounter = 0;
+		int[] order = {9,7,12,8,15,6,10,3,14,11,2,13,4,5};
+		balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS-1, frameHeight/2, randomColor(), 1)); // -1 is due to OCD kicks in
+		for(int i = 2; i <= 5; i++) {
+			for(int j = 1; j <= i; j++) {
+				double padUp = (i-1)*Ball.RADIUS + Ball.RADIUS;
+				double padRight = (i-1)*Ball.RADIUS*Math.sqrt(3);
+				Color color = randomColor();
+				if(order[ballCounter] == 8) color = Color.black;
+				balls.add(new Ball(frame.getWidth()*2/3 - Ball.RADIUS + padRight, frameHeight/2 - Ball.RADIUS - padUp + j*2*Ball.RADIUS, color, order[ballCounter]));
+				ballCounter++;
+			}
 		}
 	}
-
+	private Color randomColor() {
+		Random randomGenerator = new Random();
+		Color color = new Color(randomGenerator.nextInt(255), randomGenerator.nextInt(255), randomGenerator.nextInt(255));
+		return color.darker();
+	}
 	public static void main(String[] args) {
 		EventQueue.invokeLater(Billiard::new);
 	}

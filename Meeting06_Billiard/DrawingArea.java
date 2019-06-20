@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 import javax.swing.JPanel;
 import java.awt.Color;

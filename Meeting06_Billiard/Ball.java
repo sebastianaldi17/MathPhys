@@ -1,4 +1,4 @@
-package Meeting06_Billiard;
+//package Meeting06_Billiard;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,11 +13,13 @@ public class Ball {
 	private final static double e = 1;     // ball's coefficient of resistution
 	private final static double a = 0.005; // ball's deceleration/fraction
 	private Color ballColor;
+	private int ballNumber;
 
-	public Ball(double positionX, double positionY, Color ballColor) {
+	public Ball(double positionX, double positionY, Color ballColor, int ballNumber) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.ballColor = ballColor;
+		this.ballNumber = ballNumber;
 	}
 
 	public double getPositionX() {
@@ -49,6 +51,8 @@ public class Ball {
 		Color tempColor = g.getColor();
 		g.setColor(ballColor);
 		g.fillOval((int) (positionX - RADIUS), (int) (positionY - RADIUS), (int) (2 * RADIUS), (int) (2 * RADIUS));
+		g.setColor(Color.white);
+		g.drawString(Integer.toString(ballNumber), (int)positionX, (int)positionY);
 		g.setColor(tempColor);
 	}
 
