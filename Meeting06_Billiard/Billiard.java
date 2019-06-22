@@ -21,7 +21,6 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-
 public class Billiard {
 	private JFrame frame;
 	private Vector destination;

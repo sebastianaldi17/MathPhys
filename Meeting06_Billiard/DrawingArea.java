@@ -14,6 +14,8 @@ public class DrawingArea extends JPanel {
     private double time = 0;
     private final static double TIME_INCREASE = 0.25;
     private boolean press = false;
+    private boolean gameOver = false;
+    private int hits = 0;
     private int height;
     private int width;
     private ArrayList<Ball> balls;
@@ -57,6 +59,7 @@ public class DrawingArea extends JPanel {
         this.press = press;
         if (!press) {
             time = 0;
+            if(!gameOver) hits++;
         }
     }
 
@@ -70,6 +73,7 @@ public class DrawingArea extends JPanel {
             update();
             render();
             printScreen();
+            if(gameOver) break;
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
@@ -92,6 +96,8 @@ public class DrawingArea extends JPanel {
         }
         for(Ball b : balls) {
             if(b.holeCollision(holes) && !hitter.equals(b)) {
+                if(b.getBallNumber() == 8 && balls.size() > 3)
+                    gameOver = true;
                 balls.remove(b);
                 break;
             }
@@ -114,6 +120,7 @@ public class DrawingArea extends JPanel {
             g.setColor(Color.black);
             g.setFont(new Font("Consolas", Font.PLAIN, 24));
             g.drawString("Power: " + Integer.toString((int)time), 30, 30);
+            g.drawString("Hits: " + Integer.toString(hits), 30, 60);
             for(Ball b : balls) {
                 b.draw(g);
             }
@@ -128,6 +135,9 @@ public class DrawingArea extends JPanel {
                 g.setColor(Color.red);
                 g.drawLine((int) guideline.getX1(), (int) guideline.getY1(), (int) guideline.getX2(), (int) guideline.getY2() - (int)Ball.RADIUS);
             }
+            g.setFont(new Font("Consolas", Font.PLAIN, 120));
+            if(gameOver)
+                g.drawString("Game Over!", width/2 - 240, height/2);
         }
     }
 
@@ -140,7 +150,6 @@ public class DrawingArea extends JPanel {
             {
                 g.drawImage(drawingArea, 0, 0, null);
             }
-
             // Sync the display on some systems.
             // (on Linux, this fixes event queue problems)
             Toolkit.getDefaultToolkit().sync();
