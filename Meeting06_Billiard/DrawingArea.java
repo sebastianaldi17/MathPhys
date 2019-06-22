@@ -18,6 +18,7 @@ public class DrawingArea extends JPanel {
     private int width;
     private ArrayList<Ball> balls;
     private ArrayList<Wall> walls;
+    private ArrayList<Hole> holes;
     private Line2D guideline;
     private Vector destination;
     private Thread animator;
@@ -35,6 +36,13 @@ public class DrawingArea extends JPanel {
         this.destination = destination;
         animator = new Thread(this::eventLoop);
         guideline = new Line2D.Double(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
+        holes = new ArrayList<Hole>();
+        holes.add(new Hole(walls.get(0).getX1()-25, walls.get(0).getY1()+25, 50));
+        holes.add(new Hole(walls.get(0).getX2()+25, walls.get(0).getY1()+25, 50));
+
+        holes.add(new Hole(walls.get(1).getX2()+25, walls.get(1).getY1()-25, 50));
+        holes.add(new Hole(walls.get(2).getX1()-25, walls.get(2).getY2()-25, 50));
+        
     }
 
     public void start() {
@@ -81,7 +89,12 @@ public class DrawingArea extends JPanel {
             b.move();
             b.wallCollide(walls);
             b.ballCollide(balls);
-            
+        }
+        for(Ball b : balls) {
+            if(b.holeCollision(holes) && !hitter.equals(b)) {
+                balls.remove(b);
+                break;
+            }
         }
         guideline.setLine(hitter.getPositionX(), hitter.getPositionY(), destination.getX(), destination.getY());
     }
@@ -107,6 +120,9 @@ public class DrawingArea extends JPanel {
 
             for(Wall w : walls) {
                 w.draw(g);
+            }
+            for(Hole h : holes) {
+                h.draw(g);
             }
             if (guideline != null) {
                 g.setColor(Color.red);

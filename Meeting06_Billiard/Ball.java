@@ -47,6 +47,9 @@ public class Ball {
 	public double getMass() {
 		return mass;
 	}
+	public int getBallNumber() {
+		return ballNumber;
+	}
 	public void setPositionX(double positionX) {
 		this.positionX = positionX;
 	}
@@ -174,9 +177,20 @@ public class Ball {
             }
         }
     }
+	public boolean holeCollision(ArrayList<Hole> holes) {
+		for(Hole h : holes) {
+			double distanceX = this.positionX - h.getPositionX();
+			double distanceY = this.positionY - h.getPositionY();
+			if(Math.sqrt(distanceX*distanceX + distanceY*distanceY) <= h.getRadius() + this.getRadius()/10) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public double distance(Ball other) {
 		double distanceX = this.positionX - other.getPositionX();
 		double distanceY = this.positionY - other.getPositionY();
 		return Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 	}
+	
 }
