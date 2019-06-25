@@ -11,12 +11,15 @@ public class DrawingArea extends JPanel {
     private int frameHeight;
     private Ball ball;
     private Block controlledBlock;
+    private Block controlledBlock2;
     private Wall[] walls;
     private ArrayList<Block> targets;
     private Thread animator;
     private BufferedImage dbImage;
     private int points = 0;
+    private int points2 = 0;
     private int life = 5;
+    private int lastHit = 1;
 
     //Variables used for the ball speed		
     private double v;
@@ -67,7 +70,7 @@ public class DrawingArea extends JPanel {
 		maxY = (getHeight() - originY)/scale;
 					
 		//create the ball (x-axis,y-axis,radius,vx,vy,color) in cartesian scale
-		v = -0.3 + Math.random()*0.3;
+		v = -0.15;
 		ball = new Ball(0, 0, 0.3, v, v, Color.GREEN);
 		
 		//create the arena
@@ -83,7 +86,8 @@ public class DrawingArea extends JPanel {
 		vX = 0.1;
 		blockWidth = 1.5;
 		blockHeight= 0.5;
-		controlledBlock = new Block(0, -6, blockWidth, blockHeight, Color.BLUE);
+        controlledBlock = new Block(0, -9, blockWidth, blockHeight, Color.BLUE);
+        controlledBlock2 = new Block(0, -5, blockWidth, blockHeight, Color.DARK_GRAY);
 		
 		//setting the position for the blocks to be hit
 		ttlPerRow = 10;
@@ -107,7 +111,7 @@ public class DrawingArea extends JPanel {
 	 * @param ball
 	 * @param block
 	 */
-	public boolean detectCollision(Ball ball, Block block)
+	public int detectCollision(Ball ball, Block block)
 	{		
 		//check if the returned side is the correct one based on ball's velocity
 		Wall closestSide = null;
@@ -118,10 +122,13 @@ public class DrawingArea extends JPanel {
 		else if(ball.getVx() < 0 && ball.getVy() >= 0)
 			closestSide = block.closestSide(ball.getX(), ball.getY(), 0, 3);
 		else if(ball.getVx() < 0 && ball.getVy() < 0)
-			closestSide = block.closestSide(ball.getX(), ball.getY(), 2, 3);			
-        if(detectCollision(ball, closestSide) && !block.equals(controlledBlock))
-            return true;
-        else return false;
+            closestSide = block.closestSide(ball.getX(), ball.getY(), 2, 3);			
+        boolean collision = detectCollision(ball, closestSide);
+        if(collision && !(block.equals(controlledBlock) || block.equals(controlledBlock2)))
+            return 2; // collides with taraget
+        else if(collision)
+            return 1; //collides with hitter
+        else return 0;
 	}
 	
 	/**
@@ -156,12 +163,12 @@ public class DrawingArea extends JPanel {
 		} else return false;				
     }
     public void moveLeft() {
-        if(controlledBlock.getX() - controlledBlock.getWidth()/2 >= arenaX1)
-            controlledBlock.setX(controlledBlock.getX() - 0.15);
+        if(controlledBlock2.getX() - controlledBlock2.getWidth()/2 >= arenaX1)
+            controlledBlock2.setX(controlledBlock2.getX() - 0.31);
     }
     public void moveRight() {
-        if(controlledBlock.getX() + controlledBlock.getWidth()/2 <= arenaX2)
-            controlledBlock.setX(controlledBlock.getX() + 0.15);
+        if(controlledBlock2.getX() + controlledBlock2.getWidth()/2 <= arenaX2)
+            controlledBlock2.setX(controlledBlock2.getX() + 0.31);
     }
     public void setControlX(int mouseX) {
         double scaledX = (mouseX-getWidth()/2)/scale;
@@ -183,13 +190,17 @@ public class DrawingArea extends JPanel {
         }			
 		
 		//detect collision between ball and controlled block
-		detectCollision(ball, controlledBlock);
+        if(detectCollision(ball, controlledBlock) == 1) lastHit = 1;
+        if(detectCollision(ball, controlledBlock2) == 1) lastHit = 2;
 					
 		//detect collision between ball and targets
 		for(Block t: targets) {
-            if(detectCollision(ball, t)) {
+            if(detectCollision(ball, t) == 2) { // 2 means it collides with target
                 targets.remove(t);
-                points += 100;
+                if(lastHit == 1)
+                    points += 100;
+                else if(lastHit == 2)
+                    points2 += 100;
                 break;
             }
         }	
@@ -209,8 +220,9 @@ public class DrawingArea extends JPanel {
 			//draw the ball
 			ball.draw(g, originX, originY, scale);
 			
-			//draw the controlled block
-			controlledBlock.draw(g, originX, originY, scale);
+			//draw the controlled block(s)
+            controlledBlock.draw(g, originX, originY, scale);
+            controlledBlock2.draw(g, originX, originY, scale);
 			
 			//draw the arena
 			for(int i=0; i<walls.length; i++)
@@ -220,8 +232,10 @@ public class DrawingArea extends JPanel {
 			for(Block t: targets)
                 t.draw(g, originX, originY, scale);
             g.setColor(Color.BLACK);
-            g.drawString("Points: " + Integer.toString(points), 20, 20);
-            g.drawString("Life: " + Integer.toString(life), 20, 40);
+            g.drawString("Player 1: " + Integer.toString(points), 20, 20);
+            g.drawString("Player 2: " + Integer.toString(points2), 20, 40);
+            g.drawString("Last Hitter: " + Integer.toString(lastHit), 20, 60);
+            g.drawString("Life: " + Integer.toString(life), 20, 80);
             if(life <= 0) {
                 g.setColor(Color.RED);
                 g.setFont(new Font("Arial", Font.PLAIN, 120));

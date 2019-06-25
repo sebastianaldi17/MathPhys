@@ -77,23 +77,26 @@ public class UTS {
 		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight());
 		frame.add(drawingArea);
 		drawingArea.start();
-		/*
-		 * frame.addKeyListener(new KeyListener() {
-		 * 
-		 * @Override public void keyTyped(KeyEvent e) {
-		 * 
-		 * }
-		 * 
-		 * @Override public void keyPressed(KeyEvent e) { if(e.getKeyCode() ==
-		 * KeyEvent.VK_LEFT) drawingArea.moveLeft(); if(e.getKeyCode() ==
-		 * KeyEvent.VK_RIGHT) drawingArea.moveRight(); }
-		 * 
-		 * @Override public void keyReleased(KeyEvent e) {
-		 * 
-		 * }
-		 * 
-		 * });
-		 */
+		
+		frame.addKeyListener(new KeyListener() {
+		
+		@Override public void keyTyped(KeyEvent e) {
+		
+		}
+		
+		@Override public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_LEFT)
+				drawingArea.moveLeft();
+			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+			drawingArea.moveRight();
+		}
+		
+		@Override public void keyReleased(KeyEvent e) {
+		
+		}
+		
+		});
+		
 		frame.addMouseMotionListener(new MouseMotionListener(){
 		
 			@Override
