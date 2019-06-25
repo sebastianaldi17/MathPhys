@@ -87,9 +87,9 @@ public class DrawingArea extends JPanel {
 		controlledBlock = new Block(0, -6, blockWidth, blockHeight, Color.BLACK);
 		
 		//setting the position for the blocks to be hit
-		ttlPerRow = 20;
+		ttlPerRow = 10;
 		ttlPerCol = 1;
-		targetWidth = 1; targetHeight= 0.5;
+		targetWidth = 1.5; targetHeight= 0.8;
 		double targetX, targetY, incX, incY, leftMostX, rightMostX, topY, bottomY;
 		leftMostX = arenaX1 + 0.5 + targetWidth/2; rightMostX = arenaX2 - 0.5 - targetWidth/2;
 		topY = arenaY1 - 1; bottomY = 0;
@@ -242,7 +242,7 @@ public class DrawingArea extends JPanel {
 			render();
 			printScreen();
 			try{
-				animator.sleep(20);
+				animator.sleep(10);
 			}
 			catch(Exception ex){}
 		}		
