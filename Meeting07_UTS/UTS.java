@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 	TODO:
 	 1. Separate drawing area from frame
      2. Make more brick targets
-     3. Increase brick size and lessen gaps among bricks
+     3. Increase brick size and increase gaps among bricks
      4. Enlarge ball and change all colors in the game system
      5. Create point system
 	 6. Make controlledBlock controllable by keyboard only
