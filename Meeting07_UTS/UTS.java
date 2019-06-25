@@ -1,6 +1,9 @@
+
 //package Meeting07_UTS;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -20,48 +23,45 @@ import javax.swing.JFrame;
      8. Make a multiplayer version (reference: Gamehouse's Hamsterball multiplayer)
  */
 
-
 public class UTS {
-	//Thread where animation is run
+	// Thread where animation is run
 	private JFrame frame;
-	
-	//The blocks to be drawn
+
+	// The blocks to be drawn
 	Block controlledBlock;
 	ArrayList<Block> targets = new ArrayList<>();
-	
-	//the ball to be drawn
+
+	// the ball to be drawn
 	Ball ball;
-	
-	//the walls (arena)
+
+	// the walls (arena)
 	Wall[] walls = new Wall[4];
 
-	
-	//Variables used for the ball speed		
+	// Variables used for the ball speed
 	private double v;
-	
-	//Variables used for the arena
+
+	// Variables used for the arena
 	double arenaX1;
 	double arenaY1;
 	double arenaX2;
 	double arenaY2;
-	
-	//Variables used for the controlled block
+
+	// Variables used for the controlled block
 	double vX;
 	double blockWidth;
 	double blockHeight;
-	
-	//Variables used for the blocks to be hit
+
+	// Variables used for the blocks to be hit
 	int ttlPerRow;
 	int ttlPerCol;
 	double targetWidth;
 	double targetHeight;
-		
+
 	/**
 	 * 
 	 */
-	public UTS()
-	{
-		//configure the main canvas
+	public UTS() {
+		// configure the main canvas
 		frame = new JFrame();
 		frame.setSize(1366, 768);
 		frame.setBackground(Color.WHITE);
@@ -69,11 +69,32 @@ public class UTS {
 		frame.setUndecorated(true);
 		frame.setLayout(null);
 		frame.setVisible(true);
-		
+
 		//start the thread to draw functions to canvas
 		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight());
 		frame.add(drawingArea);
 		drawingArea.start();
+		frame.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_LEFT)
+					drawingArea.moveLeft();
+				if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+					drawingArea.moveRight();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+			}
+			
+		});
 	}
 
 	public static void main(String[] args) {

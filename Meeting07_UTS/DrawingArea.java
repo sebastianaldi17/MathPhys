@@ -154,25 +154,20 @@ public class DrawingArea extends JPanel {
             ball.setVy(newVy);
             return true;
 		} else return false;				
-	}
+    }
+    public void moveLeft() {
+        if(controlledBlock.getX() - controlledBlock.getWidth()/2 >= arenaX1)
+            controlledBlock.setX(controlledBlock.getX() - 0.15);
+    }
+    public void moveRight() {
+        if(controlledBlock.getX() + controlledBlock.getWidth()/2 <= arenaX2)
+            controlledBlock.setX(controlledBlock.getX() + 0.15);
+    }
     public void start() {
         animator.start();
     }
     public void update()
-	{	
-		//move the controlled block
-		if(controlledBlock.getX() + controlledBlock.getWidth()/2 >= arenaX2)			
-		{
-			vX = -vX;
-			controlledBlock.setX(arenaX2 - controlledBlock.getWidth()/2);
-		}
-		if(controlledBlock.getX() - controlledBlock.getWidth()/2 <= arenaX1)
-		{
-			vX = -vX;
-			controlledBlock.setX(arenaX1 + controlledBlock.getWidth()/2);
-		}
-		controlledBlock.setX(controlledBlock.getX() + vX);
-					
+	{				
 		//move the ball
 		ball.move();	
 		
