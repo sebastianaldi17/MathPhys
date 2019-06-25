@@ -163,6 +163,11 @@ public class DrawingArea extends JPanel {
         if(controlledBlock.getX() + controlledBlock.getWidth()/2 <= arenaX2)
             controlledBlock.setX(controlledBlock.getX() + 0.15);
     }
+    public void setControlX(int mouseX) {
+        double scaledX = (mouseX-getWidth()/2)/scale;
+        if(scaledX + controlledBlock.getWidth()/2 <= arenaX2 && scaledX - controlledBlock.getWidth()/2 >= arenaX1)
+            controlledBlock.setX(scaledX);
+    }
     public void start() {
         animator.start();
     }

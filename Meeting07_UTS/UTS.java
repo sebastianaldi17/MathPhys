@@ -4,6 +4,9 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -70,30 +73,38 @@ public class UTS {
 		frame.setLayout(null);
 		frame.setVisible(true);
 
-		//start the thread to draw functions to canvas
+		// start the thread to draw functions to canvas
 		DrawingArea drawingArea = new DrawingArea(frame.getWidth(), frame.getHeight());
 		frame.add(drawingArea);
 		drawingArea.start();
-		frame.addKeyListener(new KeyListener() {
-
+		/*
+		 * frame.addKeyListener(new KeyListener() {
+		 * 
+		 * @Override public void keyTyped(KeyEvent e) {
+		 * 
+		 * }
+		 * 
+		 * @Override public void keyPressed(KeyEvent e) { if(e.getKeyCode() ==
+		 * KeyEvent.VK_LEFT) drawingArea.moveLeft(); if(e.getKeyCode() ==
+		 * KeyEvent.VK_RIGHT) drawingArea.moveRight(); }
+		 * 
+		 * @Override public void keyReleased(KeyEvent e) {
+		 * 
+		 * }
+		 * 
+		 * });
+		 */
+		frame.addMouseMotionListener(new MouseMotionListener(){
+		
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void mouseMoved(MouseEvent e) {
+				drawingArea.setControlX(e.getX());
+			}
+		
+			@Override
+			public void mouseDragged(MouseEvent e) {
 				
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_LEFT)
-					drawingArea.moveLeft();
-				if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-					drawingArea.moveRight();
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-			}
-			
 		});
 	}
 
