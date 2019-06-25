@@ -1,6 +1,7 @@
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -14,6 +15,8 @@ public class DrawingArea extends JPanel {
     private ArrayList<Block> targets;
     private Thread animator;
     private BufferedImage dbImage;
+    private int points = 0;
+    private int life = 5;
 
     //Variables used for the ball speed		
     private double v;
@@ -104,7 +107,7 @@ public class DrawingArea extends JPanel {
 	 * @param ball
 	 * @param block
 	 */
-	public void detectCollision(Ball ball, Block block)
+	public boolean detectCollision(Ball ball, Block block)
 	{		
 		//check if the returned side is the correct one based on ball's velocity
 		Wall closestSide = null;
@@ -116,7 +119,9 @@ public class DrawingArea extends JPanel {
 			closestSide = block.closestSide(ball.getX(), ball.getY(), 0, 3);
 		else if(ball.getVx() < 0 && ball.getVy() < 0)
 			closestSide = block.closestSide(ball.getX(), ball.getY(), 2, 3);			
-		detectCollision(ball, closestSide);					
+        if(detectCollision(ball, closestSide) && !block.equals(controlledBlock))
+            return true;
+        else return false;
 	}
 	
 	/**
@@ -124,7 +129,7 @@ public class DrawingArea extends JPanel {
 	 * @param ball
 	 * @param wall
 	 */
-	public void detectCollision(Ball ball, Wall wall)
+	public boolean detectCollision(Ball ball, Wall wall)
 	{
 		double dist = wall.distanceLineSegment(ball.getX(), ball.getY()); 
 		if(dist <= ball.getR())
@@ -146,8 +151,9 @@ public class DrawingArea extends JPanel {
 
 			//set the ball's velocity
 			ball.setVx(newVx);
-			ball.setVy(newVy);
-		}				
+            ball.setVy(newVy);
+            return true;
+		} else return false;				
 	}
     public void start() {
         animator.start();
@@ -171,16 +177,22 @@ public class DrawingArea extends JPanel {
 		ball.move();	
 		
 		//detect collision between ball and walls
-		for(int i=0; i<walls.length; i++)
-			detectCollision(ball, walls[i]);			
+		for(int i=0; i<walls.length; i++) {
+            if(detectCollision(ball, walls[i]) && i == 2) // if collides with south wall
+                life--;
+        }			
 		
 		//detect collision between ball and controlled block
 		detectCollision(ball, controlledBlock);
 					
 		//detect collision between ball and targets
-		for(Block t: targets)
-			detectCollision(ball, t);
-						
+		for(Block t: targets) {
+            if(detectCollision(ball, t)) {
+                targets.remove(t);
+                points += 100;
+                break;
+            }
+        }	
 	}
 	
 	public void render()
@@ -206,7 +218,20 @@ public class DrawingArea extends JPanel {
 			
 			//draw the targets
 			for(Block t: targets)
-				t.draw(g, originX, originY, scale);
+                t.draw(g, originX, originY, scale);
+            g.setColor(Color.BLACK);
+            g.drawString("Points: " + Integer.toString(points), 20, 20);
+            g.drawString("Life: " + Integer.toString(life), 20, 40);
+            if(life <= 0) {
+                g.setColor(Color.RED);
+                g.setFont(new Font("Arial", Font.PLAIN, 120));
+                g.drawString("GAME OVER", frameWidth/4, frameHeight/2);
+            }
+            if(targets.size() <= 0) {
+                g.setColor(Color.YELLOW);
+                g.setFont(new Font("Arial", Font.PLAIN, 120));
+                g.drawString("YOU WIN", frameWidth/4, frameHeight/2);
+            }
 		}
 	}
 	
@@ -232,7 +257,7 @@ public class DrawingArea extends JPanel {
 	}
     public void run() {
         dbImage = (BufferedImage) createImage(frameWidth, frameHeight);
-		while(true)
+		while(life > 0 && targets.size() > 0)
 		{
 			update();
 			render();
