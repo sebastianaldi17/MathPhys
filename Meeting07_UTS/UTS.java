@@ -55,15 +55,6 @@ public class UTS {
 	int ttlPerCol;
 	double targetWidth;
 	double targetHeight;
-	
-	//Variables used to draw the xy-coordinate  
-	private double scale;	// the number of pixels for each one step (the distance between two numbers / steps)
-	private double maxNumX;	// total numbers (steps) in the x-axis
-	private double maxNumY;	// total numbers (steps) in the y-axis
-	private double maxX;	// total numbers (steps) in the x-axis
-	private double maxY;	// total numbers (steps) in the y-axis	
-	private int originX;	// the x origin
-	private int originY;	// the y origin
 		
 	/**
 	 * 

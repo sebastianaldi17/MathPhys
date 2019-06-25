@@ -49,10 +49,6 @@ public class DrawingArea extends JPanel {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         setBounds(0, 0, frameWidth, frameHeight);
-        this.ball = ball;
-        this.walls = walls;
-        this.controlledBlock = controlledBlock;
-        this.targets = targets;
 
         //setting the point of origin of the coordinate
 		originX = getWidth()/2;
@@ -69,22 +65,22 @@ public class DrawingArea extends JPanel {
 					
 		//create the ball (x-axis,y-axis,radius,vx,vy,color) in cartesian scale
 		v = -0.3 + Math.random()*0.3;
-		ball = new Ball(0, 0, 0.2, v, v, Color.BLACK);
+		ball = new Ball(0, 0, 0.3, v, v, Color.GREEN);
 		
 		//create the arena
 		arenaX1 = -15; arenaX2 = 15;
         arenaY1 = 10; arenaY2 = -10;			
         walls = new Wall[4];
-		walls[0] = new Wall(arenaX2, arenaY1, arenaX1, arenaY1, Color.BLACK);	//north wall (right to left)
-		walls[1] = new Wall(arenaX2, arenaY2, arenaX2, arenaY1, Color.BLACK);	//east wall (bottom to top)
-		walls[2] = new Wall(arenaX1, arenaY2, arenaX2, arenaY2, Color.BLACK);	//south wall (left to right)
-		walls[3] = new Wall(arenaX1, arenaY1, arenaX1, arenaY2, Color.BLACK);	//west wall (top to bottom)
+		walls[0] = new Wall(arenaX2, arenaY1, arenaX1, arenaY1, Color.RED);	//north wall (right to left)
+		walls[1] = new Wall(arenaX2, arenaY2, arenaX2, arenaY1, Color.RED);	//east wall (bottom to top)
+		walls[2] = new Wall(arenaX1, arenaY2, arenaX2, arenaY2, Color.RED);	//south wall (left to right)
+		walls[3] = new Wall(arenaX1, arenaY1, arenaX1, arenaY2, Color.RED);	//west wall (top to bottom)
 
 		//create the block to be controlled
 		vX = 0.1;
 		blockWidth = 1.5;
 		blockHeight= 0.5;
-		controlledBlock = new Block(0, -6, blockWidth, blockHeight, Color.BLACK);
+		controlledBlock = new Block(0, -6, blockWidth, blockHeight, Color.BLUE);
 		
 		//setting the position for the blocks to be hit
 		ttlPerRow = 10;
@@ -99,7 +95,7 @@ public class DrawingArea extends JPanel {
         //create the blocks to be hit
         targets = new ArrayList<Block>();
 		for(int i=0; i<ttlPerRow; i++)			
-			targets.add(new Block(targetX + i * incX, targetY + i * incY, targetWidth, targetHeight, Color.BLUE));
+			targets.add(new Block(targetX + i * incX, targetY + i * incY, targetWidth, targetHeight, Color.ORANGE));
         animator = new Thread(this::run);
     }
     		
