@@ -1,4 +1,4 @@
-package Meeting07_UTS;
+//package Meeting07_UTS;
 
 public class Vector {
 	double x;

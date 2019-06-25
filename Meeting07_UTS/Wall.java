@@ -1,4 +1,4 @@
-package Meeting07_UTS;
+//package Meeting07_UTS;
 
 import java.awt.Color;
 import java.awt.Graphics;
